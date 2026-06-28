@@ -50,4 +50,4 @@ vite.config.ts – Configuration file for Vite
 
 ## Author
 
-Sudeeksha
+Sudeeksha Ala
