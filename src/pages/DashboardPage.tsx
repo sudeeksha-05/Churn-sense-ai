@@ -7,16 +7,19 @@ import {
   PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip,
   ResponsiveContainer, LineChart, Line, CartesianGrid, Legend,
 } from "recharts";
+import RocAndConfusionSection from "./RocAndConfusionSection";
 
 const PIE_COLORS = ["hsl(222, 62%, 55%)", "hsl(355, 78%, 60%)"];
 const RISK_COLORS = ["hsl(158, 64%, 45%)", "hsl(35, 90%, 54%)", "hsl(355, 78%, 60%)"];
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+type RechartsPayload = Array<{ value: number | string; name?: string; dataKey?: string; color?: string; fill?: string }>;
+
+const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: RechartsPayload; label?: string }) => {
   if (active && payload?.length) {
     return (
       <div className="bg-white/95 backdrop-blur-sm border border-border/50 rounded-xl shadow-lg px-4 py-3 text-sm">
         {label && <p className="font-medium text-foreground mb-1">{label}</p>}
-        {payload.map((p: any, i: number) => (
+        {payload.map((p, i) => (
           <p key={i} style={{ color: p.color || p.fill }} className="font-semibold">
             {p.name || p.dataKey}: {p.value}
           </p>
@@ -160,6 +163,11 @@ export default function DashboardPage() {
               />
             </LineChart>
           </ResponsiveContainer>
+        </motion.div>
+
+        {/* ROC + Confusion Matrix */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className={card}>
+          <RocAndConfusionSection predictions={results.predictions} />
         </motion.div>
 
       </div>
